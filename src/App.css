@@ -21,7 +21,7 @@
   position: relative;
 
   .base,
-  .framework,
+  .anchordom,
   .vite {
     inset-inline: 0;
     margin: 0 auto;
@@ -33,12 +33,12 @@
     z-index: 0;
   }
 
-  .framework,
+  .anchordom,
   .vite {
     position: absolute;
   }
 
-  .framework {
+  .anchordom {
     z-index: 1;
     top: 34px;
     height: 28px;

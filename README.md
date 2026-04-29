@@ -41,8 +41,8 @@ Here is a full example demonstrating how to set up your UI and use anchors:
 
 ```tsx
 import { useState } from 'react';
-import { Panel } from './framework/components/Panel';
-import { Button, Label, ProgressBar, Toggle, ScrollList, Image } from './framework/components/kit';
+import { Panel } from './anchordom/components/Panel';
+import { Button, Label, ProgressBar, Toggle, ScrollList, Image } from './anchordom/components/kit';
 
 function App() {
   const [progress, setProgress] = useState(0.5);
