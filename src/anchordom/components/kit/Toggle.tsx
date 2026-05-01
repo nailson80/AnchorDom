@@ -6,6 +6,7 @@ import { useUIContext } from '../../context/UIContext';
 interface ToggleProps extends BaseComponentProps {
   toggled: boolean;
   onToggle: (toggled: boolean) => void;
+  disabled?: boolean;
 }
 
 export const Toggle = React.forwardRef<HTMLDivElement, ToggleProps>(({
@@ -16,6 +17,7 @@ export const Toggle = React.forwardRef<HTMLDivElement, ToggleProps>(({
   style,
   toggled,
   onToggle,
+  disabled = false,
   targetRef,
 }, ref) => {
   const { theme } = useUIContext();
@@ -28,7 +30,8 @@ export const Toggle = React.forwardRef<HTMLDivElement, ToggleProps>(({
     height: toggleTheme.height,
     backgroundImage: `url(${toggleTheme.backgroundImage})`,
     backgroundSize: '100% 100%',
-    cursor: 'pointer',
+    cursor: disabled ? 'not-allowed' : 'pointer',
+    opacity: disabled ? 0.5 : 1,
     position: 'absolute',
     ...style,
   };
@@ -54,7 +57,7 @@ export const Toggle = React.forwardRef<HTMLDivElement, ToggleProps>(({
   };
 
   return (
-    <div ref={ref} className={className} style={containerStyle} onClick={() => onToggle(!toggled)}>
+    <div ref={ref} className={className} style={containerStyle} onClick={() => !disabled && onToggle(!toggled)}>
       <div style={handleStyle} />
     </div>
   );

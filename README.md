@@ -11,6 +11,9 @@ AnchorDOM uses a virtual 1920x1080 resolution for its `<Panel>` container. This 
 Positioning elements in AnchorDOM is highly intuitive and eliminates the need for manual absolute pixel calculations. It uses a flexible anchor system defined by an origin point (`anchor`) and pixel offsets (`x`, `y`).
 The logic uses exclusively `left` and `top` percentages for the origin point (e.g., `BOTTOM_RIGHT` corresponds to `left: '100%', top: '100%'`). An internal pivot is then applied using `transform: translate()`, which ensures that any `x` or `y` offsets naturally push the element inward from its anchored corner.
 
+### Relative Anchoring
+Instead of anchoring relative to the virtual screen space, you can also anchor UI elements relative to *other* UI elements by passing a `targetRef` via React refs. When `targetRef` is provided, the component uses the position and dimensions of the target element as its local anchoring bounds. This allows you to construct modular, grouped layouts where elements flow logically from their parent without deep DOM nesting.
+
 ### Safe Areas
 Mobile devices with notches, punch holes, or home indicators are natively supported. Safe areas are dynamically injected as CSS variables (`--safe-top`, `--safe-right`, `--safe-bottom`, `--safe-left`) on the main `<Panel>` container using standard CSS environment variables (e.g., `env(safe-area-inset-top)`). Set `useSafeArea={true}` on your `<Panel>` to enable this behavior seamlessly.
 
@@ -44,9 +47,12 @@ import { useState } from 'react';
 import { Panel } from './anchordom/components/Panel';
 import { Button, Label, ProgressBar, Toggle, ScrollList, Image } from './anchordom/components/kit';
 
+import { useRef } from 'react';
+
 function App() {
   const [progress, setProgress] = useState(0.5);
   const [toggled, setToggled] = useState(false);
+  const buttonRef = useRef<HTMLDivElement>(null);
 
   return (
     // Wrap your UI in the Panel. useSafeArea ensures mobile notches are handled.
@@ -62,9 +68,18 @@ function App() {
 
       {/* Perfectly centered in the middle of the screen */}
       <Button
+        ref={buttonRef}
         anchor="MIDDLE_CENTER"
         label="Click Me!"
         onClick={() => setProgress(p => (p + 0.1) % 1.1)}
+      />
+
+      {/* Anchored below the button */}
+      <Label
+        targetRef={buttonRef}
+        anchor="BOTTOM_CENTER"
+        text="Relative Anchor"
+        y={10}
       />
 
       {/* Anchored to the bottom center, 50px upwards */}

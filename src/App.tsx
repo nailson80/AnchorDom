@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Panel } from './anchordom/components/Panel';
 import { Button, Label, ProgressBar, Toggle, ScrollList, Image } from './anchordom/components/kit';
 
 function App() {
   const [progress, setProgress] = useState(0.5);
   const [toggled, setToggled] = useState(false);
+  const buttonRef = useRef<HTMLDivElement>(null);
 
   return (
     <Panel useSafeArea={true}>
@@ -16,9 +17,17 @@ function App() {
       />
 
       <Button
+        ref={buttonRef}
         anchor="MIDDLE_CENTER"
         label="Click Me!"
         onClick={() => setProgress(p => (p + 0.1) % 1.1)}
+      />
+
+      <Label
+        targetRef={buttonRef}
+        anchor="BOTTOM_CENTER"
+        text="Relative Anchor"
+        y={10}
       />
 
       <ProgressBar
