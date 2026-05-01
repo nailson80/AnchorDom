@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { Theme } from '../theme/types';
-import { UIProvider } from '../context/UIContext';
+import { UIProvider, useUIContext } from '../context/UIContext';
 import { useAssetLoader } from '../hooks/useAssetLoader';
 
 interface PanelProps {
@@ -18,7 +18,7 @@ const InnerPanel: React.FC<Omit<PanelProps, 'theme'>> = ({
   children,
 }) => {
   const isLoaded = useAssetLoader();
-  const [scale, setScale] = useState(1);
+  const { scale, setScale } = useUIContext();
 
   useEffect(() => {
     const handleResize = () => {
@@ -70,17 +70,20 @@ const InnerPanel: React.FC<Omit<PanelProps, 'theme'>> = ({
 
   return (
     <div style={containerStyle}>
-      <div style={virtualCanvasStyle}>
+      <div id="anchordom-virtual-canvas" style={virtualCanvasStyle}>
         {children}
       </div>
     </div>
   );
 };
 
-export const Panel: React.FC<PanelProps> = ({ theme, ...props }) => {
+const PanelWithProvider: React.FC<PanelProps> = ({ theme, ...props }) => {
+  const [scale, setScale] = useState(1);
   return (
-    <UIProvider theme={theme}>
+    <UIProvider theme={theme} scale={scale} setScale={setScale}>
       <InnerPanel {...props} />
     </UIProvider>
   );
 };
+
+export const Panel = PanelWithProvider;

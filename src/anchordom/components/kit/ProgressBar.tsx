@@ -9,7 +9,7 @@ interface ProgressBarProps extends BaseComponentProps {
   width: number | string;
 }
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({
+export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(({
   anchor,
   x,
   y,
@@ -17,9 +17,10 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   style,
   progress,
   width,
-}) => {
+  targetRef,
+}, ref) => {
   const { theme } = useUIContext();
-  const anchorStyle = useAnchor({ anchor, x, y });
+  const anchorStyle = useAnchor({ anchor, x, y, targetRef });
   const pbTheme = theme.components.progressBar;
 
   const clampedProgress = Math.max(0, Math.min(1, progress));
@@ -43,8 +44,9 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   };
 
   return (
-    <div className={className} style={trackStyle}>
+    <div ref={ref} className={className} style={trackStyle}>
       <div style={fillStyle} />
     </div>
   );
-};
+});
+ProgressBar.displayName = 'ProgressBar';

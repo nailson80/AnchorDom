@@ -10,7 +10,7 @@ interface ButtonProps extends BaseComponentProps {
   disabled?: boolean;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button = React.forwardRef<HTMLDivElement, ButtonProps>(({
   anchor,
   x,
   y,
@@ -19,9 +19,10 @@ export const Button: React.FC<ButtonProps> = ({
   label,
   onClick,
   disabled = false,
-}) => {
+  targetRef,
+}, ref) => {
   const { theme } = useUIContext();
-  const anchorStyle = useAnchor({ anchor, x, y });
+  const anchorStyle = useAnchor({ anchor, x, y, targetRef });
   const [isActive, setIsActive] = useState(false);
 
   const buttonTheme = theme.components.button;
@@ -47,6 +48,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <div
+      ref={ref}
       className={className}
       style={baseStyle}
       onMouseDown={() => !disabled && setIsActive(true)}
@@ -59,4 +61,5 @@ export const Button: React.FC<ButtonProps> = ({
       {label && <span>{label}</span>}
     </div>
   );
-};
+});
+Button.displayName = 'Button';

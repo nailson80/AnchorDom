@@ -65,4 +65,5 @@ export interface BaseComponentProps {
   y?: number;
   className?: string;
   style?: React.CSSProperties;
+  targetRef?: React.RefObject<HTMLElement>;
 }
