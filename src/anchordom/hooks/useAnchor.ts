@@ -7,7 +7,7 @@ interface UseAnchorOptions {
   x?: number;
   y?: number;
   useSafeArea?: boolean;
-  targetRef?: React.RefObject<HTMLElement>;
+  targetRef?: React.RefObject<HTMLElement | null>;
 }
 
 export function useAnchor({
