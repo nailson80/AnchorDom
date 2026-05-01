@@ -40,10 +40,10 @@ function App() {
         anchor="TOP_RIGHT"
         x={-50}
         y={50}
-        src="/assets/test-icon.png"
-        width={64}
-        height={64}
-        alt="Icon"
+        src="/assets/logo.png"
+        width={128}
+        height={128}
+        alt="Logo"
       />
 
       <ScrollList
