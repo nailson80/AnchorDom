@@ -8,7 +8,7 @@ interface ToggleProps extends BaseComponentProps {
   onToggle: (toggled: boolean) => void;
 }
 
-export const Toggle: React.FC<ToggleProps> = ({
+export const Toggle = React.forwardRef<HTMLDivElement, ToggleProps>(({
   anchor,
   x,
   y,
@@ -16,9 +16,10 @@ export const Toggle: React.FC<ToggleProps> = ({
   style,
   toggled,
   onToggle,
-}) => {
+  targetRef,
+}, ref) => {
   const { theme } = useUIContext();
-  const anchorStyle = useAnchor({ anchor, x, y });
+  const anchorStyle = useAnchor({ anchor, x, y, targetRef });
   const toggleTheme = theme.components.toggle;
 
   const containerStyle: React.CSSProperties = {
@@ -53,8 +54,9 @@ export const Toggle: React.FC<ToggleProps> = ({
   };
 
   return (
-    <div className={className} style={containerStyle} onClick={() => onToggle(!toggled)}>
+    <div ref={ref} className={className} style={containerStyle} onClick={() => onToggle(!toggled)}>
       <div style={handleStyle} />
     </div>
   );
-};
+});
+Toggle.displayName = 'Toggle';

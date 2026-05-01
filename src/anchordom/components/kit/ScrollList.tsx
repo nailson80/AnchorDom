@@ -10,7 +10,7 @@ interface ScrollListProps extends BaseComponentProps {
   children: React.ReactNode;
 }
 
-export const ScrollList: React.FC<ScrollListProps> = ({
+export const ScrollList = React.forwardRef<HTMLDivElement, ScrollListProps>(({
   anchor,
   x,
   y,
@@ -20,9 +20,10 @@ export const ScrollList: React.FC<ScrollListProps> = ({
   height,
   horizontal = false,
   children,
-}) => {
+  targetRef,
+}, ref) => {
   const { theme } = useUIContext();
-  const anchorStyle = useAnchor({ anchor, x, y });
+  const anchorStyle = useAnchor({ anchor, x, y, targetRef });
   const listTheme = theme.components.scrollList;
 
   const containerStyle: React.CSSProperties = {
@@ -47,10 +48,11 @@ export const ScrollList: React.FC<ScrollListProps> = ({
   };
 
   return (
-    <div className={className} style={containerStyle}>
+    <div ref={ref} className={className} style={containerStyle}>
       <div style={contentStyle}>
         {children}
       </div>
     </div>
   );
-};
+});
+ScrollList.displayName = 'ScrollList';

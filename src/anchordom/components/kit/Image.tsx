@@ -9,7 +9,7 @@ interface ImageProps extends BaseComponentProps {
   alt?: string;
 }
 
-export const Image: React.FC<ImageProps> = ({
+export const Image = React.forwardRef<HTMLImageElement, ImageProps>(({
   anchor,
   x,
   y,
@@ -19,8 +19,9 @@ export const Image: React.FC<ImageProps> = ({
   width,
   height,
   alt = '',
-}) => {
-  const anchorStyle = useAnchor({ anchor, x, y });
+  targetRef,
+}, ref) => {
+  const anchorStyle = useAnchor({ anchor, x, y, targetRef });
 
   const imgStyle: React.CSSProperties = {
     ...anchorStyle,
@@ -30,5 +31,6 @@ export const Image: React.FC<ImageProps> = ({
     ...style,
   };
 
-  return <img className={className} style={imgStyle} src={src} alt={alt} />;
-};
+  return <img ref={ref} className={className} style={imgStyle} src={src} alt={alt} />;
+});
+Image.displayName = 'Image';

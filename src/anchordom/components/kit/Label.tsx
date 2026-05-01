@@ -7,16 +7,17 @@ interface LabelProps extends BaseComponentProps {
   text: string;
 }
 
-export const Label: React.FC<LabelProps> = ({
+export const Label = React.forwardRef<HTMLDivElement, LabelProps>(({
   anchor,
   x,
   y,
   className,
   style,
   text,
-}) => {
+  targetRef,
+}, ref) => {
   const { theme } = useUIContext();
-  const anchorStyle = useAnchor({ anchor, x, y });
+  const anchorStyle = useAnchor({ anchor, x, y, targetRef });
   const labelTheme = theme.components.label;
 
   const baseStyle: React.CSSProperties = {
@@ -31,8 +32,9 @@ export const Label: React.FC<LabelProps> = ({
   };
 
   return (
-    <div className={className} style={baseStyle}>
+    <div ref={ref} className={className} style={baseStyle}>
       {text}
     </div>
   );
-};
+});
+Label.displayName = 'Label';

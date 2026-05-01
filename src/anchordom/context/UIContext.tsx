@@ -4,15 +4,23 @@ import { defaultTheme } from '../theme/defaultTheme';
 
 interface UIContextType {
   theme: Theme;
+  scale: number;
+  setScale: (scale: number) => void;
 }
 
-const UIContext = createContext<UIContextType>({ theme: defaultTheme });
+const UIContext = createContext<UIContextType>({
+  theme: defaultTheme,
+  scale: 1,
+  setScale: () => {},
+});
 
 export const useUIContext = () => useContext(UIContext);
 
-export const UIProvider: React.FC<{ theme?: Theme; children: React.ReactNode }> = ({
+export const UIProvider: React.FC<{ theme?: Theme; scale?: number; setScale?: (scale: number) => void; children: React.ReactNode }> = ({
   theme = defaultTheme,
+  scale = 1,
+  setScale = () => {},
   children,
 }) => {
-  return <UIContext.Provider value={{ theme }}>{children}</UIContext.Provider>;
+  return <UIContext.Provider value={{ theme, scale, setScale }}>{children}</UIContext.Provider>;
 };
