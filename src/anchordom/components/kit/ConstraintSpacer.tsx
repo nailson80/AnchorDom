@@ -79,16 +79,22 @@ export const ConstraintSpacer = forwardRef<HTMLDivElement, ConstraintSpacerProps
         }
       };
 
+      // Delay to ensure refs are populated after initial render and elements are laid out
+      const timeout = setTimeout(updateMetrics, 50);
+
       updateMetrics();
 
       window.addEventListener('resize', updateMetrics);
       window.addEventListener('scroll', updateMetrics, true);
 
       return () => {
+        clearTimeout(timeout);
         window.removeEventListener('resize', updateMetrics);
         window.removeEventListener('scroll', updateMetrics, true);
       };
     }, [topTargetRef, bottomTargetRef, topOffset, bottomOffset, minHeight, scale]);
+
+    const { style: restStyle, ...otherProps } = rest;
 
     return (
       <div
@@ -100,8 +106,9 @@ export const ConstraintSpacer = forwardRef<HTMLDivElement, ConstraintSpacerProps
           width,
           visibility: style.visibility === 'hidden' ? 'hidden' : anchorStyle.visibility,
           pointerEvents: 'none',
+          ...restStyle,
         }}
-        {...rest}
+        {...otherProps}
       />
     );
   }
