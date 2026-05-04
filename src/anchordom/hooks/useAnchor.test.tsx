@@ -36,8 +36,8 @@ describe('useAnchor hook', () => {
   });
 
   it('should not include safe areas when targetRef is present', () => {
-    const targetRef = { current: document.createElement('div') } as React.RefObject<HTMLDivElement | null>;
-    const { result } = renderHook(() => useAnchor({ anchor: 'TOP_LEFT', useSafeArea: true, targetRef }), { wrapper });
+    const targetRef = { current: document.createElement('div') } as React.RefObject<HTMLElement | null>;
+    const { result } = renderHook(() => useAnchor({ anchor: 'TOP_LEFT', targetRef }), { wrapper });
 
     // Initially hidden while measuring
     expect(result.current.visibility).toBe('hidden');

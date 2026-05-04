@@ -43,6 +43,7 @@ export const Button = React.forwardRef<HTMLDivElement, ButtonProps>(({
     alignItems: 'center',
     userSelect: 'none',
     boxSizing: 'border-box',
+    pointerEvents: 'auto',
     ...style,
   };
 
