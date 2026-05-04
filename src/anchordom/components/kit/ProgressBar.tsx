@@ -4,10 +4,10 @@ import { useAnchor } from '../../hooks/useAnchor';
 import { useUIContext } from '../../context/UIContext';
 import { getNineSliceStyle } from '../../utils/nineSlice';
 
-interface ProgressBarProps extends BaseComponentProps {
+type ProgressBarProps = BaseComponentProps & {
   progress: number; // 0 to 1
   width: number | string;
-}
+};
 
 export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(({
   anchor,

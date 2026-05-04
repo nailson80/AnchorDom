@@ -59,11 +59,22 @@ export interface Theme {
   components: ComponentStyles;
 }
 
-export interface BaseComponentProps {
+export interface CoreComponentProps {
   anchor?: AnchorPoint;
   x?: number;
   y?: number;
   className?: string;
   style?: React.CSSProperties;
-  targetRef?: React.RefObject<HTMLElement | null>;
 }
+
+export interface AbsoluteProps extends CoreComponentProps {
+  targetRef?: undefined;
+  useSafeArea?: boolean;
+}
+
+export interface RelativeProps extends CoreComponentProps {
+  targetRef: React.RefObject<HTMLElement | null>;
+  useSafeArea?: never;
+}
+
+export type BaseComponentProps = AbsoluteProps | RelativeProps;

@@ -2,13 +2,23 @@ import React, { useState, useLayoutEffect } from 'react';
 import type { AnchorPoint } from '../theme/types';
 import { useUIContext } from '../context/UIContext';
 
-interface UseAnchorOptions {
+export interface CoreAnchorOptions {
   anchor?: AnchorPoint;
   x?: number;
   y?: number;
-  useSafeArea?: boolean;
-  targetRef?: React.RefObject<HTMLElement | null>;
 }
+
+export interface AbsoluteAnchorOptions extends CoreAnchorOptions {
+  useSafeArea?: boolean;
+  targetRef?: undefined;
+}
+
+export interface RelativeAnchorOptions extends CoreAnchorOptions {
+  useSafeArea?: never;
+  targetRef: React.RefObject<HTMLElement | null>;
+}
+
+export type UseAnchorOptions = AbsoluteAnchorOptions | RelativeAnchorOptions;
 
 export function useAnchor({
   anchor = 'TOP_LEFT',

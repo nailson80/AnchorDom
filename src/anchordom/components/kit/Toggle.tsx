@@ -3,11 +3,11 @@ import type { BaseComponentProps } from '../../theme/types';
 import { useAnchor } from '../../hooks/useAnchor';
 import { useUIContext } from '../../context/UIContext';
 
-interface ToggleProps extends BaseComponentProps {
+type ToggleProps = BaseComponentProps & {
   toggled: boolean;
   onToggle: (toggled: boolean) => void;
   disabled?: boolean;
-}
+};
 
 export const Toggle = React.forwardRef<HTMLDivElement, ToggleProps>(({
   anchor,

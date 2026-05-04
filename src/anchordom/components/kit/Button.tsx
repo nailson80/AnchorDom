@@ -4,11 +4,11 @@ import { useAnchor } from '../../hooks/useAnchor';
 import { useUIContext } from '../../context/UIContext';
 import { getNineSliceStyle } from '../../utils/nineSlice';
 
-interface ButtonProps extends BaseComponentProps {
+type ButtonProps = BaseComponentProps & {
   label?: string;
   onClick?: () => void;
   disabled?: boolean;
-}
+};
 
 export const Button = React.forwardRef<HTMLDivElement, ButtonProps>(({
   anchor,

@@ -2,12 +2,12 @@ import React from 'react';
 import type { BaseComponentProps } from '../../theme/types';
 import { useAnchor } from '../../hooks/useAnchor';
 
-interface ImageProps extends BaseComponentProps {
+type ImageProps = BaseComponentProps & {
   src: string;
   width?: number | string;
   height?: number | string;
   alt?: string;
-}
+};
 
 export const Image = React.forwardRef<HTMLImageElement, ImageProps>(({
   anchor,
