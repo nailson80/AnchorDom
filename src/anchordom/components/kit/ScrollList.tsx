@@ -3,12 +3,12 @@ import type { BaseComponentProps } from '../../theme/types';
 import { useAnchor } from '../../hooks/useAnchor';
 import { useUIContext } from '../../context/UIContext';
 
-interface ScrollListProps extends BaseComponentProps {
+type ScrollListProps = BaseComponentProps & {
   width: number | string;
   height: number | string;
   horizontal?: boolean;
   children: React.ReactNode;
-}
+};
 
 export const ScrollList = React.forwardRef<HTMLDivElement, ScrollListProps>(({
   anchor,

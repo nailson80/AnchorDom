@@ -3,9 +3,9 @@ import type { BaseComponentProps } from '../../theme/types';
 import { useAnchor } from '../../hooks/useAnchor';
 import { useUIContext } from '../../context/UIContext';
 
-interface LabelProps extends BaseComponentProps {
+type LabelProps = BaseComponentProps & {
   text: string;
-}
+};
 
 export const Label = React.forwardRef<HTMLDivElement, LabelProps>(({
   anchor,
