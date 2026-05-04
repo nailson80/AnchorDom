@@ -1,199 +1,65 @@
-# AnchorDOM
+# ⚓ AnchorDOM
 
-AnchorDOM is a React + TypeScript UI framework designed specifically for game development, perfectly suited for use alongside Three.js / React Three Fiber (R3F). It provides a robust DOM-overlay approach that lets you build responsive, high-performance user interfaces on top of your WebGL canvas.
+**A resolution-independent, constraint-based UI framework for React game development.**
 
-## Key Concepts
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
-### Virtual Resolution
-AnchorDOM uses a virtual 1920x1080 resolution for its `<Panel>` container. This virtual canvas is automatically scaled up or down via CSS `transform` (using a letterbox/pillarbox approach) to fit the browser window while maintaining aspect ratio. This guarantees that your UI elements maintain their exact proportions and pixel-perfect design regardless of the user's screen size or device.
+Stop fighting with CSS media queries and flexbox for your game UIs. **AnchorDOM** allows you to design your interface at a master virtual resolution (e.g., 1920x1080) and perfectly scales it to fit any device, aspect ratio, or notch (Safe Area) automatically. 
 
-### Anchor Positioning
-Positioning elements in AnchorDOM is highly intuitive and eliminates the need for manual absolute pixel calculations. It uses a flexible anchor system defined by an origin point (`anchor`) and pixel offsets (`x`, `y`).
-The logic uses exclusively `left` and `top` percentages for the origin point (e.g., `BOTTOM_RIGHT` corresponds to `left: '100%', top: '100%'`). An internal pivot is then applied using `transform: translate()`, which ensures that any `x` or `y` offsets naturally push the element inward from its anchored corner.
+Perfect for React Three Fiber (R3F) overlays, Cordova/Capacitor mobile wrappers, and web-based game engines.
 
-### Relative Anchoring
-Instead of anchoring relative to the virtual screen space, you can also anchor UI elements relative to *other* UI elements by passing a `targetRef` via React refs. When `targetRef` is provided, the component uses the position and dimensions of the target element as its local anchoring bounds. This allows you to construct modular, grouped layouts where elements flow logically from their parent without deep DOM nesting.
+## ✨ Features
 
-### Safe Areas
-Mobile devices with notches, punch holes, or home indicators are natively supported. Safe areas are dynamically injected as CSS variables (`--safe-top`, `--safe-right`, `--safe-bottom`, `--safe-left`) on the main `<Panel>` container using standard CSS environment variables (e.g., `env(safe-area-inset-top)`). Set `useSafeArea={true}` on your `<Panel>` to enable this behavior seamlessly.
+- 📐 **Virtual Canvas Scaling:** Design in 1920x1080. AnchorDOM scales your UI using precise CSS transforms without blurry canvas rendering.
+- ⚓ **9-Point Anchoring:** Position elements like a native game engine (`TOP_LEFT`, `MIDDLE_CENTER`, `BOTTOM_RIGHT`).
+- 🎯 **Relative Targeting:** Anchor components to *other* components using strict React Refs.
+- 📏 **Constraint Spacers:** Dynamic "Snap-To-Grid" layout helpers that fill vertical real estate between elements.
+- 🖼️ **Native 9-Slice Support:** Game sprites scale without corner distortion.
+- 📱 **Notch-Proof:** Automatic Safe-Area integration for modern mobile devices.
 
-## Getting Started
+## 📦 Installation
 
-AnchorDOM is built with Vite, React, and TypeScript. To run the project locally:
+```bash
+npm install anchordom
+```
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+## 🚀 Quick Start
 
-2. Run the development server:
-   ```bash
-   npm run dev
-   ```
-
-3. Build for production:
-   ```bash
-   npm run build
-   ```
-
-## Basic Usage
-
-The core of AnchorDOM is the `<Panel>` component, which establishes the virtual resolution, handles scaling, and sets up the UI context. Inside the panel, you can place built-in components like `<Button>`, `<Label>`, `<ProgressBar>`, and more.
-
-Here is a full example demonstrating how to set up your UI and use anchors:
+Wrap your application in the `<Panel>` provider and define your master resolution. 
 
 ```tsx
-import { useState } from 'react';
-import { Panel } from './anchordom/components/Panel';
-import { Button, Label, ProgressBar, Toggle, ScrollList, Image } from './anchordom/components/kit';
+import { Panel, Button, Label } from 'anchordom/kit';
+import { defaultTheme } from 'anchordom/theme';
 
-import { useRef } from 'react';
-
-function App() {
-  const [progress, setProgress] = useState(0.5);
-  const [toggled, setToggled] = useState(false);
-  const buttonRef = useRef<HTMLDivElement>(null);
-
+function GameHUD() {
   return (
-    // Wrap your UI in the Panel. useSafeArea ensures mobile notches are handled.
-    <Panel useSafeArea={true} designWidth={1920} designHeight={1080}>
-
-      {/* Centered at the top with a 50px offset downwards */}
-      <Label
-        anchor="TOP_CENTER"
-        y={50}
-        text="AnchorDOM Demo"
-        style={{ fontSize: 48, color: '#ffeb3b' }}
+    // Creates a 1920x1080 virtual canvas that fits to the window
+    <Panel resolution={{ width: 1920, height: 1080 }} theme={defaultTheme} useSafeArea>
+      
+      <Label 
+        text="Score: 9999" 
+        anchor="TOP_LEFT" 
+        x={50} y={50} 
       />
 
-      {/* Perfectly centered in the middle of the screen */}
-      <Button
-        ref={buttonRef}
-        anchor="MIDDLE_CENTER"
-        label="Click Me!"
-        onClick={() => setProgress(p => (p + 0.1) % 1.1)}
+      <Button 
+        label="ATTACK" 
+        anchor="BOTTOM_RIGHT" 
+        x={-50} y={-50} 
+        onClick={() => console.log('Boom!')} 
       />
-
-      {/* Anchored below the button */}
-      <Label
-        targetRef={buttonRef}
-        anchor="BOTTOM_CENTER"
-        text="Relative Anchor"
-        y={10}
-      />
-
-      {/* Anchored to the bottom center, 50px upwards */}
-      <ProgressBar
-        anchor="BOTTOM_CENTER"
-        y={-50}
-        progress={progress}
-        width={400}
-      />
-
-      {/* Anchored to the top left corner, pushed 50px inward from both edges */}
-      <Toggle
-        anchor="TOP_LEFT"
-        x={50}
-        y={50}
-        toggled={toggled}
-        onToggle={setToggled}
-      />
-
-      {/* Anchored to the top right corner, pushed 50px inward */}
-      <Image
-        anchor="TOP_RIGHT"
-        x={-50}
-        y={50}
-        src="/assets/test-icon.png"
-        width={64}
-        height={64}
-        alt="Icon"
-      />
-
-      {/* A scrollable list anchored to the middle right */}
-      <ScrollList
-        anchor="MIDDLE_RIGHT"
-        x={-50}
-        width={300}
-        height={400}
-      >
-        <div style={{ padding: 20, background: '#444', color: 'white' }}>Item 1</div>
-        <div style={{ padding: 20, background: '#555', color: 'white' }}>Item 2</div>
-        <div style={{ padding: 20, background: '#666', color: 'white' }}>Item 3</div>
-        <div style={{ padding: 20, background: '#777', color: 'white' }}>Item 4</div>
-        <div style={{ padding: 20, background: '#888', color: 'white' }}>Item 5</div>
-        <div style={{ padding: 20, background: '#999', color: 'white' }}>Item 6</div>
-      </ScrollList>
 
     </Panel>
   );
 }
-
-export default App;
 ```
 
-## Advanced Components
+## 📚 Documentation
+To get the most out of AnchorDOM, check out the detailed guides in our `/docs` folder:
+1. [**Components & API Reference**](/docs/COMPONENTS.md) - Full list of props and UI kit elements.
+2. [**Theming & 9-Slice Assets**](/docs/THEMING.md) - How to style your game and preload sprites.
+3. [**Layout Cookbook**](/docs/LAYOUT_COOKBOOK.md) - Advanced recipes for dynamic UI layouts.
 
-### ConstraintSpacer
-The `ConstraintSpacer` component dynamically sizes itself between two target elements. This is extremely useful for responsive layouts where the middle area needs to stretch and shrink based on the physical position of top and bottom headers or menus. It renders with `pointerEvents: 'none'` by default, but you can override this for nested interactive content.
-
-Here is an example demonstrating a `ConstraintSpacer` filling the space between a top and bottom label, containing a scrollable list:
-
-```tsx
-import { useRef } from 'react';
-import { Panel } from './anchordom/components/Panel';
-import { Label, ConstraintSpacer, ScrollList } from './anchordom/components/kit';
-
-function ConstraintExample() {
-  const topRef = useRef<HTMLDivElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <Panel useSafeArea={true} designWidth={1920} designHeight={1080}>
-      {/* Top Anchor */}
-      <Label
-        ref={topRef}
-        anchor="TOP_CENTER"
-        y={50}
-        text="Top Anchor"
-        style={{ fontSize: 48, background: '#222', padding: 20, color: '#fff' }}
-      />
-
-      {/* Bottom Anchor */}
-      <Label
-        ref={bottomRef}
-        anchor="BOTTOM_CENTER"
-        y={-50}
-        text="Bottom Anchor"
-        style={{ fontSize: 48, background: '#222', padding: 20, color: '#fff' }}
-      />
-
-      {/* Dynamic Spacer filling the gap */}
-      <ConstraintSpacer
-        topTargetRef={topRef}
-        bottomTargetRef={bottomRef}
-        topOffset={20}
-        bottomOffset={20}
-        width={600}
-        anchor="TOP_CENTER"
-        style={{ pointerEvents: 'auto' }} // Allow interaction for children
-      >
-        {/* Child inherits the spacer's height and position constraints */}
-        <ScrollList
-          anchor="TOP_CENTER"
-          width="100%"
-          height="100%"
-        >
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div key={i} style={{ padding: 20, background: i % 2 === 0 ? '#444' : '#555', color: 'white' }}>
-              Dynamic Content {i + 1}
-            </div>
-          ))}
-        </ScrollList>
-      </ConstraintSpacer>
-    </Panel>
-  );
-}
-
-export default ConstraintExample;
-```
+## 📄 License
+MIT License. See `LICENSE` for more information.

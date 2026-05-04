@@ -27,7 +27,7 @@ function App() {
         targetRef={buttonRef}
         anchor="BOTTOM_CENTER"
         text="Relative Anchor"
-        y={10}
+        y={50}
       />
 
       <ProgressBar
