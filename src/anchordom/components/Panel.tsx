@@ -8,6 +8,7 @@ interface PanelProps {
   designWidth?: number;
   designHeight?: number;
   useSafeArea?: boolean;
+  overlayMode?: boolean;
   children: React.ReactNode;
 }
 
@@ -15,6 +16,7 @@ const InnerPanel: React.FC<Omit<PanelProps, 'theme'>> = ({
   designWidth = 1920,
   designHeight = 1080,
   useSafeArea = false,
+  overlayMode = false,
   children,
 }) => {
   const isLoaded = useAssetLoader();
@@ -39,16 +41,18 @@ const InnerPanel: React.FC<Omit<PanelProps, 'theme'>> = ({
   }
 
   const containerStyle: React.CSSProperties = {
-    position: 'absolute',
+    position: 'fixed',
     top: 0,
     left: 0,
-    width: '100%',
-    height: '100%',
+    width: '100vw',
+    height: '100vh',
+    zIndex: 9999,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    pointerEvents: 'none', // Let clicks pass through the container to the game underneath if needed
+    backgroundColor: overlayMode ? 'transparent' : '#000',
+    pointerEvents: overlayMode ? 'none' : 'auto',
 
     // Inject safe area variables at the root
     ...(useSafeArea && {
@@ -59,18 +63,18 @@ const InnerPanel: React.FC<Omit<PanelProps, 'theme'>> = ({
     } as any),
   };
 
-  const virtualCanvasStyle: React.CSSProperties = {
+  const rootStyle: React.CSSProperties = {
     position: 'relative',
     width: designWidth,
     height: designHeight,
     transform: `scale(${scale})`,
     transformOrigin: 'center center',
-    pointerEvents: 'auto', // Re-enable pointer events for UI elements
+    pointerEvents: overlayMode ? 'none' : 'auto',
   };
 
   return (
-    <div style={containerStyle}>
-      <div id="anchordom-virtual-canvas" style={virtualCanvasStyle}>
+    <div id="anchordom-viewport" style={containerStyle}>
+      <div id="anchordom-root" style={rootStyle}>
         {children}
       </div>
     </div>

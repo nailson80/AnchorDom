@@ -1,20 +1,36 @@
 {
   "name": "temp-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "main": "./dist/anchordom.umd.js",
+  "module": "./dist/anchordom.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/anchordom.es.js",
+      "require": "./dist/anchordom.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:lib": "tsc -b && vite build -c vite.config.lib.ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run"
   },
-  "dependencies": {
+  "peerDependencies": {
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
   },
   "devDependencies": {
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "@eslint/js": "^10.0.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -31,6 +47,7 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.10",
+    "vite-plugin-dts": "^5.0.0",
     "vitest": "^4.1.5"
   }
 }

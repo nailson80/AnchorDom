@@ -33,6 +33,7 @@ export const Toggle = React.forwardRef<HTMLDivElement, ToggleProps>(({
     cursor: disabled ? 'not-allowed' : 'pointer',
     opacity: disabled ? 0.5 : 1,
     position: 'absolute',
+    pointerEvents: 'auto',
     ...style,
   };
 
