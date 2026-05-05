@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import type { BaseComponentProps } from '../../theme/types';
 import { useAnchor } from '../../hooks/useAnchor';
 import { useUIContext } from '../../context/UIContext';
@@ -27,9 +27,13 @@ export const Button = React.forwardRef<HTMLDivElement, ButtonProps>(({
 
   const buttonTheme = theme.components.button;
   const bgImage = isActive ? (buttonTheme.activeBackgroundImage || buttonTheme.backgroundImage) : buttonTheme.backgroundImage;
-  const nineSliceStyle = getNineSliceStyle(bgImage, buttonTheme.backgroundSlice);
 
-  const baseStyle: React.CSSProperties = {
+  const nineSliceStyle = useMemo(
+    () => getNineSliceStyle(bgImage, buttonTheme.backgroundSlice),
+    [bgImage, buttonTheme.backgroundSlice]
+  );
+
+  const baseStyle: React.CSSProperties = useMemo(() => ({
     ...anchorStyle,
     ...nineSliceStyle,
     fontFamily: buttonTheme.fontFamily,
@@ -45,7 +49,16 @@ export const Button = React.forwardRef<HTMLDivElement, ButtonProps>(({
     boxSizing: 'border-box',
     pointerEvents: 'auto',
     ...style,
-  };
+  }), [
+    anchorStyle,
+    nineSliceStyle,
+    buttonTheme.fontFamily,
+    buttonTheme.fontSize,
+    buttonTheme.color,
+    buttonTheme.padding,
+    disabled,
+    style,
+  ]);
 
   return (
     <div
