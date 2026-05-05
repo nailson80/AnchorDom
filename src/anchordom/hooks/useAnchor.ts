@@ -99,81 +99,85 @@ export function useAnchor({
     };
   }, [targetRef, anchor, scale]);
 
-  let left = '0%';
-  let top = '0%';
-  let translateX = '-0%';
-  let translateY = '-0%';
+  const style = React.useMemo(() => {
+    let left = '0%';
+    let top = '0%';
+    let translateX = '-0%';
+    let translateY = '-0%';
 
-  let safeAreaX = '';
-  let safeAreaY = '';
+    let safeAreaX = '';
+    let safeAreaY = '';
 
-  switch (anchor) {
-    case 'TOP_LEFT':
-      translateX = '0%'; translateY = '0%';
-      if (useSafeArea && !targetRef) { safeAreaX = 'var(--safe-left, 0px)'; safeAreaY = 'var(--safe-top, 0px)'; }
-      break;
-    case 'TOP_CENTER':
-      left = '50%';
-      translateX = '-50%'; translateY = '0%';
-      if (useSafeArea && !targetRef) { safeAreaY = 'var(--safe-top, 0px)'; }
-      break;
-    case 'TOP_RIGHT':
-      left = '100%';
-      translateX = '-100%'; translateY = '0%';
-      if (useSafeArea && !targetRef) { safeAreaX = 'calc(-1 * var(--safe-right, 0px))'; safeAreaY = 'var(--safe-top, 0px)'; }
-      break;
-    case 'MIDDLE_LEFT':
-      top = '50%';
-      translateX = '0%'; translateY = '-50%';
-      if (useSafeArea && !targetRef) { safeAreaX = 'var(--safe-left, 0px)'; }
-      break;
-    case 'MIDDLE_CENTER':
-      left = '50%'; top = '50%';
-      translateX = '-50%'; translateY = '-50%';
-      break;
-    case 'MIDDLE_RIGHT':
-      left = '100%'; top = '50%';
-      translateX = '-100%'; translateY = '-50%';
-      if (useSafeArea && !targetRef) { safeAreaX = 'calc(-1 * var(--safe-right, 0px))'; }
-      break;
-    case 'BOTTOM_LEFT':
-      top = '100%';
-      translateX = '0%'; translateY = '-100%';
-      if (useSafeArea && !targetRef) { safeAreaX = 'var(--safe-left, 0px)'; safeAreaY = 'calc(-1 * var(--safe-bottom, 0px))'; }
-      break;
-    case 'BOTTOM_CENTER':
-      left = '50%'; top = '100%';
-      translateX = '-50%'; translateY = '-100%';
-      if (useSafeArea && !targetRef) { safeAreaY = 'calc(-1 * var(--safe-bottom, 0px))'; }
-      break;
-    case 'BOTTOM_RIGHT':
-      left = '100%'; top = '100%';
-      translateX = '-100%'; translateY = '-100%';
-      if (useSafeArea && !targetRef) { safeAreaX = 'calc(-1 * var(--safe-right, 0px))'; safeAreaY = 'calc(-1 * var(--safe-bottom, 0px))'; }
-      break;
-  }
-
-  // Combine translations, offsets, and safe areas
-  const tx = safeAreaX ? `calc(${translateX} + ${x}px + ${safeAreaX})` : `calc(${translateX} + ${x}px)`;
-  const ty = safeAreaY ? `calc(${translateY} + ${y}px + ${safeAreaY})` : `calc(${translateY} + ${y}px)`;
-
-  const style: React.CSSProperties = {
-    position: 'absolute',
-    transform: `translate(${tx}, ${ty})`,
-  };
-
-  if (targetRef) {
-    if (targetPos) {
-      style.left = targetPos.left;
-      style.top = targetPos.top;
-    } else {
-      // Hide while initially calculating to prevent layout jump
-      style.visibility = 'hidden';
+    switch (anchor) {
+      case 'TOP_LEFT':
+        translateX = '0%'; translateY = '0%';
+        if (useSafeArea && !targetRef) { safeAreaX = 'var(--safe-left, 0px)'; safeAreaY = 'var(--safe-top, 0px)'; }
+        break;
+      case 'TOP_CENTER':
+        left = '50%';
+        translateX = '-50%'; translateY = '0%';
+        if (useSafeArea && !targetRef) { safeAreaY = 'var(--safe-top, 0px)'; }
+        break;
+      case 'TOP_RIGHT':
+        left = '100%';
+        translateX = '-100%'; translateY = '0%';
+        if (useSafeArea && !targetRef) { safeAreaX = 'calc(-1 * var(--safe-right, 0px))'; safeAreaY = 'var(--safe-top, 0px)'; }
+        break;
+      case 'MIDDLE_LEFT':
+        top = '50%';
+        translateX = '0%'; translateY = '-50%';
+        if (useSafeArea && !targetRef) { safeAreaX = 'var(--safe-left, 0px)'; }
+        break;
+      case 'MIDDLE_CENTER':
+        left = '50%'; top = '50%';
+        translateX = '-50%'; translateY = '-50%';
+        break;
+      case 'MIDDLE_RIGHT':
+        left = '100%'; top = '50%';
+        translateX = '-100%'; translateY = '-50%';
+        if (useSafeArea && !targetRef) { safeAreaX = 'calc(-1 * var(--safe-right, 0px))'; }
+        break;
+      case 'BOTTOM_LEFT':
+        top = '100%';
+        translateX = '0%'; translateY = '-100%';
+        if (useSafeArea && !targetRef) { safeAreaX = 'var(--safe-left, 0px)'; safeAreaY = 'calc(-1 * var(--safe-bottom, 0px))'; }
+        break;
+      case 'BOTTOM_CENTER':
+        left = '50%'; top = '100%';
+        translateX = '-50%'; translateY = '-100%';
+        if (useSafeArea && !targetRef) { safeAreaY = 'calc(-1 * var(--safe-bottom, 0px))'; }
+        break;
+      case 'BOTTOM_RIGHT':
+        left = '100%'; top = '100%';
+        translateX = '-100%'; translateY = '-100%';
+        if (useSafeArea && !targetRef) { safeAreaX = 'calc(-1 * var(--safe-right, 0px))'; safeAreaY = 'calc(-1 * var(--safe-bottom, 0px))'; }
+        break;
     }
-  } else {
-    style.left = left;
-    style.top = top;
-  }
+
+    // Combine translations, offsets, and safe areas
+    const tx = safeAreaX ? `calc(${translateX} + ${x}px + ${safeAreaX})` : `calc(${translateX} + ${x}px)`;
+    const ty = safeAreaY ? `calc(${translateY} + ${y}px + ${safeAreaY})` : `calc(${translateY} + ${y}px)`;
+
+    const baseStyle: React.CSSProperties = {
+      position: 'absolute',
+      transform: `translate(${tx}, ${ty})`,
+    };
+
+    if (targetRef) {
+      if (targetPos) {
+        baseStyle.left = targetPos.left;
+        baseStyle.top = targetPos.top;
+      } else {
+        // Hide while initially calculating to prevent layout jump
+        baseStyle.visibility = 'hidden';
+      }
+    } else {
+      baseStyle.left = left;
+      baseStyle.top = top;
+    }
+
+    return baseStyle;
+  }, [anchor, useSafeArea, targetRef, x, y, targetPos]);
 
   return style;
 }
