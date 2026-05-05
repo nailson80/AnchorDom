@@ -1,6 +1,6 @@
 {
-  "name": "temp-app",
-  "private": true,
+  "name": "anchordom",
+  "private": false,
   "version": "1.0.0",
   "type": "module",
   "main": "./dist/anchordom.umd.js",

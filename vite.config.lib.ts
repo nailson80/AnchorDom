@@ -9,6 +9,7 @@ export default defineConfig({
     dts({
       insertTypesEntry: true,
       include: ['src/anchordom'],
+      tsconfigPath: './tsconfig.app.json',
     }),
   ],
   build: {
