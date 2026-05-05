@@ -56,10 +56,10 @@ function GameHUD() {
 ```
 
 ## 📚 Documentation
-To get the most out of AnchorDOM, check out the detailed guides in our `/docs` folder:
-1. [**Components & API Reference**](/docs/COMPONENTS.md) - Full list of props and UI kit elements.
-2. [**Theming & 9-Slice Assets**](/docs/THEMING.md) - How to style your game and preload sprites.
-3. [**Layout Cookbook**](/docs/LAYOUT_COOKBOOK.md) - Advanced recipes for dynamic UI layouts.
+To get the most out of AnchorDOM, check out the detailed guides in our repository:
+1. [**Components & API Reference**](https://github.com/nailson80/anchordom/blob/main/docs/COMPONENTS.md) - Full list of props and UI kit elements.
+2. [**Theming & 9-Slice Assets**](https://github.com/nailson80/anchordom/blob/main/docs/THEMING.md) - How to style your game and preload sprites.
+3. [**Layout Cookbook**](https://github.com/nailson80/anchordom/blob/main/docs/LAYOUT_COOKBOOK.md) - Advanced recipes for dynamic UI layouts.
 
 ## 📄 License
 MIT License. See `LICENSE` for more information.

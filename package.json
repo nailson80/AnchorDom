@@ -1,13 +1,14 @@
 {
   "name": "anchordom",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "main": "./dist/anchordom.umd.js",
   "module": "./dist/anchordom.es.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "docs"
   ],
   "exports": {
     ".": {

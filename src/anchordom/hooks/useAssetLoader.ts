@@ -3,7 +3,9 @@ import { useUIContext } from '../context/UIContext';
 
 export function useAssetLoader(): boolean {
   const { theme } = useUIContext();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(() => {
+    return !theme.assets || theme.assets.length === 0;
+  });
 
   useEffect(() => {
     let isMounted = true;
