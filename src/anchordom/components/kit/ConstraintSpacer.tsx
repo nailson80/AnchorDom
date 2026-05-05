@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useState, forwardRef } from 'react';
 import { useUIContext } from '../../context/UIContext';
 import { useAnchor } from '../../hooks/useAnchor';
+import { throttle } from '../../utils/throttle';
 import type { AnchorPoint } from '../../theme/types';
 
 export interface ConstraintSpacerProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -39,7 +40,7 @@ export const ConstraintSpacer = forwardRef<HTMLDivElement, ConstraintSpacerProps
     const anchorStyle = useAnchor({ anchor, x, y: 0, useSafeArea: false });
 
     useLayoutEffect(() => {
-      const updateMetrics = () => {
+      const updateMetrics = throttle(() => {
         if (!topTargetRef?.current || !bottomTargetRef?.current) {
           setStyle({ top: '0px', height: '0px', visibility: 'hidden' });
           return;
@@ -47,7 +48,7 @@ export const ConstraintSpacer = forwardRef<HTMLDivElement, ConstraintSpacerProps
 
         const topEl = topTargetRef.current;
         const bottomEl = bottomTargetRef.current;
-        const canvasEl = document.getElementById('anchordom-virtual-canvas');
+        const canvasEl = document.getElementById('anchordom-root');
 
         if (topEl && bottomEl && canvasEl) {
           const topRect = topEl.getBoundingClientRect();
@@ -77,7 +78,7 @@ export const ConstraintSpacer = forwardRef<HTMLDivElement, ConstraintSpacerProps
             visibility: 'visible',
           });
         }
-      };
+      }, 16);
 
       // Delay to ensure refs are populated after initial render and elements are laid out
       const timeout = setTimeout(updateMetrics, 50);
@@ -91,6 +92,7 @@ export const ConstraintSpacer = forwardRef<HTMLDivElement, ConstraintSpacerProps
         clearTimeout(timeout);
         window.removeEventListener('resize', updateMetrics);
         window.removeEventListener('scroll', updateMetrics, true);
+        updateMetrics.cancel();
       };
     }, [topTargetRef, bottomTargetRef, topOffset, bottomOffset, minHeight, scale]);
 

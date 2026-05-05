@@ -39,7 +39,7 @@ export function useAnchor({
 
     const updatePosition = throttle(() => {
       const targetElement = targetRef.current;
-      const canvasElement = document.getElementById('anchordom-virtual-canvas');
+      const canvasElement = document.getElementById('anchordom-root');
 
       if (targetElement && canvasElement) {
         const targetRect = targetElement.getBoundingClientRect();
