@@ -8,7 +8,7 @@ describe('ConstraintSpacer', () => {
   beforeEach(() => {
     // Mock getBoundingClientRect
     Element.prototype.getBoundingClientRect = vi.fn().mockImplementation(function (this: Element) {
-      if (this.id === 'anchordom-virtual-canvas') {
+      if (this.id === 'anchordom-root') {
         return { top: 0, left: 0, width: 1920, height: 1080, bottom: 1080, right: 1920 };
       }
       if (this.id === 'top-el') {
@@ -28,7 +28,7 @@ describe('ConstraintSpacer', () => {
 
     render(
       <UIProvider scale={1}>
-        <div id="anchordom-virtual-canvas">
+        <div id="anchordom-root">
           <ConstraintSpacer
             ref={ref}
             topTargetRef={topRef}
@@ -50,7 +50,7 @@ describe('ConstraintSpacer', () => {
 
     const { getByTestId } = render(
       <UIProvider scale={1}>
-        <div id="anchordom-virtual-canvas">
+        <div id="anchordom-root">
           <div ref={topRef} id="top-el" />
           <div ref={bottomRef} id="bottom-el" />
           <ConstraintSpacer
@@ -78,7 +78,7 @@ describe('ConstraintSpacer', () => {
 
     const { getByTestId } = render(
       <UIProvider scale={1}>
-        <div id="anchordom-virtual-canvas">
+        <div id="anchordom-root">
           <div ref={topRef} id="top-el" />
           <div ref={bottomRef} id="bottom-el" />
           <ConstraintSpacer
@@ -105,7 +105,7 @@ describe('ConstraintSpacer', () => {
 
     const { getByTestId } = render(
       <UIProvider scale={1}>
-        <div id="anchordom-virtual-canvas">
+        <div id="anchordom-root">
           <div ref={topRef} id="top-el" />
           <div ref={bottomRef} id="bottom-el" />
           <ConstraintSpacer
@@ -131,7 +131,7 @@ describe('ConstraintSpacer', () => {
 
     const { getByTestId } = render(
       <UIProvider scale={2}>
-        <div id="anchordom-virtual-canvas">
+        <div id="anchordom-root">
           <div ref={topRef} id="top-el" />
           <div ref={bottomRef} id="bottom-el" />
           <ConstraintSpacer
