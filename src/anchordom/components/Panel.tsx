@@ -60,7 +60,7 @@ const InnerPanel: React.FC<Omit<PanelProps, 'theme'>> = ({
       '--safe-right': 'env(safe-area-inset-right, 0px)',
       '--safe-bottom': 'env(safe-area-inset-bottom, 0px)',
       '--safe-left': 'env(safe-area-inset-left, 0px)',
-    } as any),
+    } as React.CSSProperties),
   };
 
   const rootStyle: React.CSSProperties = {
