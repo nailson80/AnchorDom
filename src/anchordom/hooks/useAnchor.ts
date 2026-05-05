@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
+import { throttle } from '../utils/throttle';
 import type { AnchorPoint } from '../theme/types';
 import { useUIContext } from '../context/UIContext';
 
@@ -36,7 +37,7 @@ export function useAnchor({
       return;
     }
 
-    const updatePosition = () => {
+    const updatePosition = throttle(() => {
       const targetElement = targetRef.current;
       const canvasElement = document.getElementById('anchordom-virtual-canvas');
 
@@ -85,7 +86,7 @@ export function useAnchor({
 
         setTargetPos({ left: `${leftPx}px`, top: `${topPx}px` });
       }
-    };
+    }, 16);
 
     updatePosition();
 
