@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { Theme } from '../theme/types';
 import { UIProvider, useUIContext } from '../context/UIContext';
 import { useAssetLoader } from '../hooks/useAssetLoader';
+import { throttle } from '../utils/throttle';
 
 interface PanelProps {
   theme?: Theme;
@@ -23,18 +24,21 @@ const InnerPanel: React.FC<Omit<PanelProps, 'theme'>> = ({
   const { scale, setScale } = useUIContext();
 
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = throttle(() => {
       const scaleX = window.innerWidth / designWidth;
       const scaleY = window.innerHeight / designHeight;
       // Use the minimum scale to fit everything (letterbox/pillarbox approach)
       setScale(Math.min(scaleX, scaleY));
-    };
+    }, 16);
 
     window.addEventListener('resize', handleResize);
     handleResize();
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, [designWidth, designHeight]);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      handleResize.cancel();
+    };
+  }, [designWidth, designHeight, setScale]);
 
   if (!isLoaded) {
     return null; // Or a loading spinner

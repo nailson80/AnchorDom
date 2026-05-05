@@ -97,6 +97,7 @@ export function useAnchor({
     return () => {
       window.removeEventListener('resize', updatePosition);
       window.removeEventListener('scroll', updatePosition, true);
+      updatePosition.cancel();
     };
   }, [targetRef, anchor, scale]);
 
