@@ -3,6 +3,11 @@
   "private": false,
   "version": "1.0.2",
   "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nailson80/anchordom.git"
+  },
   "main": "./dist/anchordom.umd.js",
   "module": "./dist/anchordom.es.js",
   "types": "./dist/index.d.ts",
