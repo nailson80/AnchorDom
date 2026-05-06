@@ -1,13 +1,28 @@
 # ⚓ AnchorDOM
 
-**A resolution-independent, constraint-based UI framework for React game development.**
+**A React UI system inspired by game engines—build HUDs and overlays without fighting CSS.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
-Stop fighting with CSS media queries and flexbox for your game UIs. **AnchorDOM** allows you to design your interface at a master virtual resolution (e.g., 1920x1080) and perfectly scales it to fit any device, aspect ratio, or notch (Safe Area) automatically. 
+**Stop fighting CSS to build game UIs in React.**
 
-Perfect for React Three Fiber (R3F) overlays, Cordova/Capacitor mobile wrappers, and web-based game engines.
+Design your UI at a fixed resolution (like 1920x1080), and AnchorDOM automatically handles scaling, positioning, and safe areas for any screen size or aspect ratio.
+
+Think of it like a traditional game engine UI system—built for React.
+
+Ideal for React Three Fiber (R3F), browser-based games, and hybrid mobile apps.
+
+---
+
+### 🎯 Use AnchorDOM if you:
+- Are building UI for React Three Fiber or browser-based games  
+- Want pixel-perfect layouts across all screen sizes  
+- Are tired of wrestling with flexbox and media queries for game interfaces  
+
+---
+
+AnchorDOM provides predictable, resolution-independent layout primitives for building game-style UIs in React.
 
 ## ✨ Features
 
@@ -26,7 +41,7 @@ npm install anchordom
 
 ## 🚀 Quick Start
 
-Wrap your application in the `<Panel>` provider and define your master resolution. 
+Wrap your app in a `<Panel>` to create a resolution-independent UI canvas: 
 
 ```tsx
 import { Panel, Button, Label } from 'anchordom/kit';
